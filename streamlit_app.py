@@ -1,10 +1,10 @@
 import streamlit as st
-import joblib
+import pickle
 import json
-import numpy as np
 
-# Load model using joblib (safer than pickle)
-model = joblib.load("engine_fault_pipeline.pkl")
+# Load model (pickle)
+with open("engine_fault_pipeline.pkl", "rb") as f:
+    model = pickle.load(f)
 
 # Load class names
 with open("class_names.json", "r") as f:
@@ -12,12 +12,12 @@ with open("class_names.json", "r") as f:
 
 st.title("Engine Fault Classification")
 
-# Example input fields (replace with your real features)
-feature1 = st.number_input("Feature 1", value=0.0)
-feature2 = st.number_input("Feature 2", value=0.0)
-feature3 = st.number_input("Feature 3", value=0.0)
+# Example input fields (replace with your actual features)
+feature1 = st.number_input("Feature 1")
+feature2 = st.number_input("Feature 2")
+feature3 = st.number_input("Feature 3")
 
 if st.button("Predict"):
-    X = np.array([[feature1, feature2, feature3]])
+    X = [[feature1, feature2, feature3]]
     prediction = model.predict(X)[0]
     st.write("Prediction:", class_names[str(prediction)])
